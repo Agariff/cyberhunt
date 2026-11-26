@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CyberHunt Viewer</title>
+<style>
+  body { margin:0; background:#0d1117; color:#39ff14; font-family:monospace; text-align:center; }
+  h2 { padding:10px; margin:0; font-size:1em; }
+  #status { font-size:0.8em; color:#57606a; }
+  #screen { max-width:100vw; max-height:90vh; display:block; margin:0 auto; background:#000; }
+</style>
+</head>
+<body>
+<h2>🖥️ CyberHunt Viewer</h2>
+<div id="status">connecting...</div>
+<img id="screen" alt="waiting for frames...">
+
+<script>
+const status = document.getElementById('status');
+const screen = document.getElementById('screen');
+const token = new URLSearchParams(location.search).get('token') || '';
+
+const wsProto = location.protocol === 'https:' ? 'wss://' : 'ws://';
+const ws = new WebSocket(wsProto + location.hostname + ':8081');
+
+ws.onopen = () => {
+  status.textContent = 'connected — waiting for phone';
+  ws.send(JSON.stringify({ role: 'browser', token }));
+};
+
+ws.onmessage = (e) => {
+  const blob = e.data;
+  if (blob instanceof Blob) {
+    const url = URL.createObjectURL(blob);
+    const old = screen.src;
+    screen.src = url;
+    if (old) URL.revokeObjectURL(old);
+    status.textContent = 'live';
+  }
+};
+
+ws.onclose = () => { status.textContent = 'disconnected'; };
+</script>
+</body>
+</html>
