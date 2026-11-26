@@ -20,6 +20,11 @@ jobs:
           mv ScreenShareService.kt app/src/main/java/com/example/cyberhunt/
           mv strings.xml app/src/main/res/values/
           
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: 8.5
+
       - name: Build with Gradle
         run: |
           echo "include ':app'" > settings.gradle
