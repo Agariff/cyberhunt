@@ -5,12 +5,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      
       - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
-      - uses: android-actions/setup-android@v3
-      - uses: gradle/actions/setup-gradle@v3
+          
       - name: Move files into correct folders
         run: |
           mkdir -p app/src/main/java/com/example/cyberhunt
@@ -19,10 +19,12 @@ jobs:
           mv MainActivity.kt app/src/main/java/com/example/cyberhunt/
           mv ScreenShareService.kt app/src/main/java/com/example/cyberhunt/
           mv strings.xml app/src/main/res/values/
-      - name: Build
+          
+      - name: Build with Gradle
         run: |
-          gradle wrapper
+          echo "include ':app'" > settings.gradle
           gradle assembleDebug
+          
       - uses: actions/upload-artifact@v4
         with:
           name: CyberHunt-APK
