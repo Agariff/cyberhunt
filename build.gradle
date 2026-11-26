@@ -1,0 +1,21 @@
+buildscript {
+    repositories { google(); mavenCentral() }
+    dependencies { classpath 'com.android.tools.build:gradle:8.1.4' }
+}
+apply plugin: 'com.android.application'
+
+android {
+    namespace "com.example.cyberhunt"
+    compileSdk 34
+    defaultConfig {
+        applicationId "com.example.cyberhunt"
+        minSdk 24
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+    }
+}
+
+dependencies {
+    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
+}
